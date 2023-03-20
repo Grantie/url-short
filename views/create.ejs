@@ -15,8 +15,13 @@
             Create Short URL
         </h1>
         <form action="/create" method="post">
-            <input type="password" name="password" id="password" placeholder="Password..." class="form-control" required>
+            <input type="password" name="password" id="password" placeholder="Password..." class="form-control"
+                required>
             <input type="text" name="longUrl" id="longUrl" placeholder="Long URL..." class="form-control" required>
+            <input class="form-check-input" type="checkbox" value="1" id="iframe" name="iframe">
+            <label class="form-check-label" for="flexCheckDefault">
+                Show in iframe
+            </label>
             <button class="btn btn-primary" type="submit" style="width: 100%;">
                 Create
             </button>

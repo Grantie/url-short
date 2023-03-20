@@ -26,6 +26,8 @@ app.get("/", (req, res) => {
 app.post("/create", (req, res) => {
     var password = req.body.password;
     var longUrl = req.body.longUrl;
+    var iframe = req.body.iframe;
+    if (parseInt(iframe) != 1) iframe = null;
     if (!password || !longUrl) return false;
 
     if (process.env.ADMINPASS === password) {
@@ -34,8 +36,9 @@ app.post("/create", (req, res) => {
             longUrl: longUrl,
             timestamp: Date.now(),
             clicks: 0,
+            iframe: iframe,
         });
-        res.render("success.ejs", { shortUrl: `https://link.tikogrant.com/!${id}`, longUrl: longUrl});
+        res.render("success.ejs", { shortUrl: `https://link.tikogrant.com/!${id}`, longUrl: longUrl });
     } else {
         res.render("incorrectPassword.ejs");
     }
@@ -50,7 +53,11 @@ app.get("/!:id", (req, res) => {
         } else {
             var longUrl = snapshot.val().longUrl;
             set(ref(db, `/urls/${id}/clicks`), snapshot.val().clicks + 1);
-            res.redirect(longUrl);
+            if (snapshot.val().iframe != null) {
+                res.render("iframe.ejs", { url: longUrl });
+            } else {
+                res.redirect(longUrl);
+            }
         }
     });
 });
